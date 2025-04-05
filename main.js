@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+// import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 
 
@@ -9,11 +9,13 @@ const h = window.innerHeight;
 
 const scene = new THREE.Scene({antialias: true});
 const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
-camera.position.z = 5
+camera.position.set(4, 2.5, -1)
+// camera.position.set(0, 4.5, 0)
+camera.lookAt(0, 0, 0)
 
-const controls = new OrbitControls(camera, document.body);
-controls.enableDamping = true;
-controls.dampingFactor = 0.25;
+// const controls = new OrbitControls(camera, document.body);
+// controls.enableDamping = true;
+// controls.dampingFactor = 0.25;
 
 
 const renderer = new THREE.WebGLRenderer()
@@ -78,12 +80,21 @@ const fillLight = new THREE.PointLight(0xffffff, 1);
 fillLight.position.set(-5, 5, 5);
 scene.add(fillLight);
 
+const piso = new THREE.Mesh(
+    new THREE.PlaneGeometry(10, 10),
+    new THREE.MeshStandardMaterial({ color: 0x444444 })
+  );
+  piso.rotation.x = -Math.PI / 2;
+  piso.position.y = -2;
+  scene.add(piso);
+  
+
 const clock = new THREE.Clock(); 
 function animate(){
     requestAnimationFrame(animate)
     renderer.render(scene, camera)
     rotateWheel()
-    controls.update()
+    // controls.update()
     const deltaTime = clock.getDelta(); 
     if (mixer) mixer.update(deltaTime); // Actualizar el mezclador de animaciones
     // playAnimation()
